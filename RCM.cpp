@@ -13,7 +13,7 @@
 
 using namespace std;
 using namespace gte;
-using namespace smart;
+//using namespace smart;
 void openRead(std::ofstream& stream, std::string fileN, unsigned int idx = 1);
 
 void openRead(std::ofstream& stream, std::string fileN, unsigned int idx)
@@ -30,16 +30,29 @@ void openRead(std::ofstream& stream, std::string fileN, unsigned int idx)
 
 int main(int argc, char* argv[])
 {
-	double ang1, ang2;
-	if (argc < 3)
+
+	double ang1=1, ang2=1,box=1, lw=1,dIn = 1;
+	if (argc < 5)
 	{
 		ang1 = 120;
 		ang2 = 120;
+		lw = 1;
+		Smarticle::L = Smarticle::W*lw;
+		Smarticle::l = Smarticle::L - Smarticle::D;
 	}
 	else
 	{
 		ang1 = atof(argv[1]);
 		ang2 = atof(argv[2]);
+		lw = atof(argv[3]);
+		box = atof(argv[4]);
+		dIn = atof(argv[5]);
+		Smarticle::D = dIn;
+		Smarticle::w = 14 * Smarticle::D;
+		Smarticle::W = Smarticle::w - Smarticle::D;
+		Smarticle::L = Smarticle::W*lw;
+		Smarticle::l = Smarticle::L + Smarticle::D;
+		Smarticle::boxSize = box*Smarticle::D;
 	}
 
 	//to properly map to system i've already begun using
@@ -52,11 +65,7 @@ int main(int argc, char* argv[])
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_real_distribution<> dis(0, 1);
-	std::uniform_real_distribution<> azu(0, GTE_C_PI);
-	std::uniform_real_distribution<> theta(0, 2 * GTE_C_PI);
-
-
-	std::uniform_real_distribution<> rLoc(0, Smarticle::boxSize - Smarticle::D / 2); //D/2 is closeset staple can be, parallel with side of box
+	std::uniform_real_distribution<> rLoc(Smarticle::D/2, Smarticle::boxSize - Smarticle::D / 2); //D/2 is closeset staple can be, parallel with side of box
 
 	/////////////////////////////////////////
 	//Generate Central Staple
@@ -128,7 +137,7 @@ int main(int argc, char* argv[])
 	int completed = 0;
 	int NN = 0;
 	//	int N = 0;
-	unsigned int	its = 100000;
+	unsigned int	its = 1000000;
 
 	for (unsigned int i = 0; i < its; i++)
 	{
@@ -226,7 +235,6 @@ int main(int argc, char* argv[])
 			//if endpoints are inside system boundaries, consider it a completed test
 			completed++;
 
-
 			//if smarticle does not collide with other smarticle increment successful test counter NN
 			if (mainSmart.checkNotColliding(smartOther, mainSmart))
 			{
@@ -264,6 +272,8 @@ int main(int argc, char* argv[])
 	simResults << Smarticle::L << "\n";
 	simResults << Smarticle::W << "\n";
 	simResults << Smarticle::boxSize << "\n";
+	simResults << ang1 << "\n";
+	simResults << ang2 << "\n";
 	simResults.close();
 	secondFile.close();
 	firstFile.close();

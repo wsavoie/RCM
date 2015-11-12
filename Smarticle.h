@@ -92,10 +92,10 @@ namespace gte {
 		};*/
 		
 	}
-namespace smart{
+
 	gte::Segment3<double> genSeg(double x1, double y1, double z1, double x2, double y2, double z2);
 	gte::Vector<3, double> genVec(double x, double y, double z);
 	gte::Vector<3, double> crossProd(gte::Vector<3, double> u, gte::Vector<3, double> v);
 	gte::Vector<3, double> rotateByAngle(double ang, gte::Vector<3, double> point0, gte::Vector<3, double> point1, gte::Vector<3, double> b);
-}
+
 #endif /* SMARTICLE_H_ */

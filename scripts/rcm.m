@@ -4,29 +4,35 @@
 % system(horzcat('D:\GeometryCode\GTEngine\Executable\v120\Win32\Release\_Output\v120\Win32\Release\CapsuleIntersect.v12.exe'...
 %     ,' ',num2str(ang1),' ',num2str(ang2)))
 % !D:\GeometryCode\GTEngine\Executable\v120\Win32\Release\_Output\v120\Win32\Release\CapsuleIntersect.v12.exe 120 120 &
+fold = 'D:\RCMcode\RCM\Results\UShape\';
+pars = '1.0-90-90-52-.01\';
 
 PON=1;
-points1 = importdata('D:\RCMcode\RCM\Release\mainStaple.txt');
-points2 = importdata('D:\RCMcode\RCM\Release\secondStaple.txt');
-intersects = importdata('D:\RCMcode\RCM\Release\intersects.txt');
-res = importdata('D:\RCMcode\RCM\Release\results.txt');
+points1     = importdata(horzcat(fold,pars,'mainStaple.txt'));
+points2     = importdata(horzcat(fold,pars,'secondStaple.txt'));
+intersects  = importdata(horzcat(fold,pars,'intersects.txt'));
+res         = importdata(horzcat(fold,pars,'results.txt'));
 its= res(1);
 completed = res(2);
 nonCols=res(3);
 D=res(4);
 L=res(5);
 W=res(6);
-dim=res(7);
-vp = pi*W*(D/2)^2+2*pi*L*(D/2)^2+4/3*pi*(D/2)^3;
+dim=res(7); %sphere radius
+ang1=res(8);
+ang2=res(9);
+
+vp  = pi*W*(D/2)^2+2*pi*L*(D/2)^2+4/3*pi*(D/2)^3;
+vp2 = pi/6*D^3*(3-1) + pi/4*D^2*(W+2*L);
 p=(completed-nonCols)/completed;
 p2=(nonCols)/completed;
 
 V=4/3*pi*(dim/2)^3;
-V2=(dim^3);
 
-
-phi=[10*vp/(p*V) 10*vp/(p*V2) 10*vp/(p2*V) 10*vp/(p2*V2)]
-
+phi=[10*vp/(p*V) 10*vp2/(p*V); 10*vp/(p2*V) 10*vp2/(p2*V)]
+pts('p:',p,'  p*V:', p*V);
+loops=100;
+F(loops) = struct('cdata',[],'colormap',[]);
 close all
 if PON
     [sx,sy,sz]=sphere(100);
@@ -44,7 +50,7 @@ if PON
 
     mainCol = [1,0,0]';
     otherCol= [0,0,1]';
-    for(i=1:50)
+for(i=1:loops)
     hold off;
     plot3(1,1,1);
     tubeplot(mainStaple.c1,D/2,20,mainCol);
@@ -69,7 +75,8 @@ if PON
     zlabel('z');
     axis equal;
     axis([0,dim+D,0,dim+D,0,dim+D]);
-     pause();
+	drawnow
+    F(i) = getframe(gcf);
    % pause;
     %close all
     end
