@@ -31,14 +31,14 @@ void openRead(std::ofstream& stream, std::string fileN, unsigned int idx)
 int main(int argc, char* argv[])
 {
 
-	double ang1=1, ang2=1,box=1, lw=1,dIn = 1;
+	double ang1 = 1, ang2 = 1, box = 1, lw = 1;
 	if (argc < 5)
 	{
 		ang1 = 120;
 		ang2 = 120;
 		lw = 1;
 		Smarticle::L = Smarticle::W*lw;
-		Smarticle::l = Smarticle::L - Smarticle::D;
+		Smarticle::l = Smarticle::L + Smarticle::D;
 	}
 	else
 	{
@@ -46,8 +46,6 @@ int main(int argc, char* argv[])
 		ang2 = atof(argv[2]);
 		lw = atof(argv[3]);
 		box = atof(argv[4]);
-		dIn = atof(argv[5]);
-		Smarticle::D = dIn;
 		Smarticle::w = 14 * Smarticle::D;
 		Smarticle::W = Smarticle::w - Smarticle::D;
 		Smarticle::L = Smarticle::W*lw;
@@ -65,6 +63,8 @@ int main(int argc, char* argv[])
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_real_distribution<> dis(0, 1);
+	std::uniform_real_distribution<> dis2(-1, 1);
+	std::uniform_real_distribution<> dis3(-0.5,0.5);
 	std::uniform_real_distribution<> rLoc(Smarticle::D/2, Smarticle::boxSize - Smarticle::D / 2); //D/2 is closeset staple can be, parallel with side of box
 
 	/////////////////////////////////////////
@@ -149,26 +149,48 @@ int main(int argc, char* argv[])
 		ocap1.radius = Smarticle::D / 2.0;
 		ocap2.radius = Smarticle::D / 2.0;
 
-		double x1, y1, z1;
+		double x1, y1, z1, u,fx,fy,fz;
 		double rx, ry, rz;
-		//make initial position of center segment
-		x1 = rLoc(gen);
-		y1 = rLoc(gen);
-		z1 = rLoc(gen);
-		//now make a position W/2 away to determine outer points //http://mathworld.wolfram.com/SpherePointPicking.html
-		rx = (dis(gen));
-		ry = (dis(gen));
-		rz = (dis(gen));
+
+		//x1 = rLoc(gen);
+		//y1 = rLoc(gen);
+		//z1 = rLoc(gen);
+		//double sqrtV1 = sqrt(x1*x1 + y1*y1 + z1*z1);
+		//x1 = (Smarticle::boxSize - Smarticle::D / 2)*x1 / sqrtV1;
+		//y1 = (Smarticle::boxSize - Smarticle::D / 2)*y1 / sqrtV1;
+		//z1 = (Smarticle::boxSize - Smarticle::D / 2)*z1 / sqrtV1;
+
+		//////////////////////////////////////////////////////////////
+		//http://math.stackexchange.com/questions/87230/picking-random-points-in-the-volume-of-sphere-with-uniform-probability
+		//define initial point of center segment
+		x1 = dis2(gen);
+		y1 = dis2(gen);
+		z1 = dis2(gen);
+	
+		double sqrtV1 = sqrt(x1*x1 + y1*y1 + z1*z1);
+		u = std::pow(dis(gen), 1.0 / 3.0);
+		fx = (Smarticle::boxSize / 2.0 - Smarticle::D / 2.0)*u*x1 / sqrtV1;
+		fy = (Smarticle::boxSize / 2.0 - Smarticle::D / 2.0)*u*y1 / sqrtV1;
+		fz = (Smarticle::boxSize / 2.0 - Smarticle::D / 2.0)*u*z1 / sqrtV1;
+		
+
+
+
+		////now make a position W/2 away to determine outer points //http://mathworld.wolfram.com/SpherePointPicking.html
+		rx = (dis2(gen));
+		ry = (dis2(gen));
+		rz = (dis2(gen));
 
 		Vector<3, double> p0, p1, temp;
 		double sqrtVal = sqrt(rx*rx + ry*ry + rz*rz);
-		p0[0] = (-rx*Smarticle::W / 2.0) / sqrtVal + x1;
-		p0[1] = (-ry*Smarticle::W / 2.0) / sqrtVal + y1;
-		p0[2] = (-rz*Smarticle::W / 2.0) / sqrtVal + z1;
+		p0[0] = (rx*Smarticle::W / 2.0) / sqrtVal + Smarticle::boxSize / 2.0+fx;
+		p0[1] = (ry*Smarticle::W / 2.0) / sqrtVal + Smarticle::boxSize / 2.0+fy;
+		p0[2] = (rz*Smarticle::W / 2.0) / sqrtVal + Smarticle::boxSize / 2.0+fz;
 
-		p1[0] = (rx*Smarticle::W / 2.0) / sqrtVal + x1;
-		p1[1] = (ry*Smarticle::W / 2.0) / sqrtVal + y1;
-		p1[2] = (rz*Smarticle::W / 2.0) / sqrtVal + z1;
+		p1[0] = -(rx*Smarticle::W / 2.0) / sqrtVal + Smarticle::boxSize / 2.0+fx;
+		p1[1] = -(ry*Smarticle::W / 2.0) / sqrtVal + Smarticle::boxSize / 2.0+fy;
+		p1[2] = -(rz*Smarticle::W / 2.0) / sqrtVal + Smarticle::boxSize / 2.0+fz;
+
 
 
 		gte::Segment3<double> ocap1seg =  genSeg(p0[0], p0[1], p0[2], p1[0], p1[1], p1[2]);
@@ -272,6 +294,10 @@ int main(int argc, char* argv[])
 	simResults << Smarticle::L << "\n";
 	simResults << Smarticle::W << "\n";
 	simResults << Smarticle::boxSize << "\n";
+
+	//remap angles back!
+	ang1= 180*(ang1+ GTE_C_PI / 2)/(GTE_C_PI);
+	ang2 = -1 * 180 * (ang2 - GTE_C_PI / 2) / (GTE_C_PI);
 	simResults << ang1 << "\n";
 	simResults << ang2 << "\n";
 	simResults.close();
