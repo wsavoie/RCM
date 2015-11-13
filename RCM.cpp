@@ -137,7 +137,7 @@ int main(int argc, char* argv[])
 	int completed = 0;
 	int NN = 0;
 	//	int N = 0;
-	unsigned int	its = 5000000;
+	unsigned int	its = 2500000;
 
 	for (unsigned int i = 0; i < its; i++)
 	{

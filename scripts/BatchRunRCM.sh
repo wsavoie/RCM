@@ -22,12 +22,14 @@ for z in `seq 0 14`; do
 	foldName=AngleChangeLW=${lwArr[1]};
 	mkdir $foldName
 	for i in `seq 0 12`; do
+	  SECONDS=0;
 	  printf '\n%s\n' "$i"
 	  #a=./$foldName/${lwArr[$i]}-${a1Arr[$i]}-${a2Arr[$i]}-$(date '+%Y%m%d-%H%M%S')
 	  a=./$foldName/${lwArr[$i]}-${a1Arr[$i]}-${a2Arr[$i]}-${boxSizeArr[$i]}
 	  mkdir $a
 	  cd $a
 	  $exePath ${a1Arr[$i]} ${a2Arr[$i]} ${lwArr[$i]} ${boxSizeArr[$i]};
+	  printf '\nSim Time=%ds\n' "$SECONDS"
 	  cd ../..;
 	done;
 done;
