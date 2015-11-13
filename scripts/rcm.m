@@ -1,40 +1,45 @@
-% ang1 = 120;
-% ang2 = 120;
-% 
-% system(horzcat('D:\GeometryCode\GTEngine\Executable\v120\Win32\Release\_Output\v120\Win32\Release\CapsuleIntersect.v12.exe'...
-%     ,' ',num2str(ang1),' ',num2str(ang2)))
-% !D:\GeometryCode\GTEngine\Executable\v120\Win32\Release\_Output\v120\Win32\Release\CapsuleIntersect.v12.exe 120 120 &
-fold = 'D:\RCMcode\RCM\Results\UShape\';
-pars = '1.0-9-0-122\';
+function [lw, phi,ang1,ang2]= rcm(fold,C)
 
-PON=1;
-points1     = importdata(horzcat(fold,pars,'mainStaple.txt'));
-points2     = importdata(horzcat(fold,pars,'secondStaple.txt'));
-intersects  = importdata(horzcat(fold,pars,'intersects.txt'));
-res         = importdata(horzcat(fold,pars,'results.txt'));
+
+% C = 10.5;
+% pars = '0.2-90-90-122\';
+% fold = 'D:\RCMcode\RCM\Results\UShape\';
+PON=0;
+% points1     = importdata(horzcat(fold,pars,'mainStaple.txt'));
+% points2     = importdata(horzcat(fold,pars,'secondStaple.txt'));
+% intersects  = importdata(horzcat(fold,pars,'intersects.txt'));
+% res         = importdata(horzcat(fold,pars,'results.txt'));
+
+if PON==1
+    points1     = importdata(horzcat(fold,'mainStaple.txt'));
+    points2     = importdata(horzcat(fold,'secondStaple.txt'));
+    intersects  = importdata(horzcat(fold,'intersects.txt'));
+end
+res         = importdata(horzcat(fold,'results.txt'));
+
+
 its= res(1);
 completed = res(2);
 nonCols=res(3);
 D=res(4);
-L=res(5)+D;
-W=res(6)+D;
+L=res(5);
+W=res(6);
 dim=res(7); %sphere radius
 ang1=res(8);
 ang2=res(9);
 
 vp  = pi*(W)*(D/2)^2+2*pi*L*(D/2)^2+4/3*pi*(D/2)^3;
 
-vp2 = pi/6*D^3*(3-1) + pi/4*D^2*(W+2*L);
+% vp2 = pi/6*D^3*(3-1) + pi/4*D^2*(W+2*L);
 if L==0
     pi/6*D^3 + pi/4*D^2*(W+2*L);
 end
 p=(completed-nonCols)/completed;
-p2=(nonCols)/completed;
-
 V=4/3*pi*(dim/2)^3;
 
-phi=[10.8*vp/(p*V) 10.8*vp2/(p*V); 10*vp/(p2*V) 10*vp2/(p2*V)]
-pts('p:',p,'  p*V:', p*V);
+% phi=[10.8*vp/(p*V) 10.8*vp2/(p*V)]
+phi=C*vp/(p*V);
+% pts('p:',p,'  p*V:', p*V);
 loops=75;
 % F(loops) = struct('cdata',[],'colormap',[]);
 close all
@@ -80,9 +85,11 @@ for(i=1:loops)
     zlabel('z');
     axis equal;
     axis([0,dim+D,0,dim+D,0,dim+D]);
-	drawnow
+	drawnow;
 %     F(i) = getframe(gcf);
 %    pause;
     %close all
     end
 end
+lw = L/W;
+% totalPhi(s+1,:)=[(L-D)/(W-D), phi]
