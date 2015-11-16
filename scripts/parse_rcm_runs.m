@@ -1,17 +1,19 @@
 % directory_name = 'AngleChangeLW=0.0';
-directory_name = 'D:\RCMcode\RCM\Results\All angles 1M iterations\AngleChangeLW=0.7\';
+% directory_name = 'D:\RCMcode\RCM\Results\All angles 1M iterations\AngleChange\';
+% directory_name = 'D:\RCMcode\RCM\Results\All angles 1M iterations\AngleChangeLW=0.7\';
+directory_name = 'D:\RCMcode\RCM\Results\AngleChangeLW=1.4\';
 folds = dir(directory_name);
 folds = folds(3:end);
 
 %decide which things to plot
 PON = [1 2];
-C=10.0;
+C=10.8;
 for(i=1:length(folds))
 [lw(i), phi(i), ang1(i), ang2(i)]=rcm(horzcat(directory_name,folds(i).name,'\'),C);
 end
 temp = [lw' ang1' phi'];
 temp = sortrows(temp,2);
-phiSurf=[phiSurf;temp];
+% phiSurf=[phiSurf;temp];
 
 if PON(1)==1;
     %% plot phi vs. l/w 

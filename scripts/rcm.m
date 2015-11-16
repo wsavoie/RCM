@@ -42,7 +42,7 @@ phi=C*vp/(p*V);
 % pts('p:',p,'  p*V:', p*V);
 loops=75;
 % F(loops) = struct('cdata',[],'colormap',[]);
-close all
+% close all
 if PON
     [sx,sy,sz]=sphere(100);
     sx=dim/2*sx+dim/2;
