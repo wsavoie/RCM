@@ -1,5 +1,5 @@
-function [lw, phi,ang1,ang2]= rcm(fold,C)
-
+function [lw, phi,ang1,ang2]= rcm(fold,C) 
+%C=contact number from paper
 
 % C = 10.5;
 % pars = '0.2-90-90-122\';

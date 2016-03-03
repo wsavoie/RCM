@@ -34,8 +34,8 @@ int main(int argc, char* argv[])
 	double ang1 = 1, ang2 = 1, box = 1, lw = 1;
 	if (argc < 5)
 	{
-		ang1 = 120;
-		ang2 = 120;
+		ang1 = 90;
+		ang2 = 90;
 		lw = 1;
 		Smarticle::L = Smarticle::W*lw;
 		Smarticle::l = Smarticle::L + Smarticle::D;
@@ -137,7 +137,7 @@ int main(int argc, char* argv[])
 	int completed = 0;
 	int NN = 0;
 	//	int N = 0;
-	unsigned int	its = 2500000;
+	unsigned int	its = 2500;
 
 	for (unsigned int i = 0; i < its; i++)
 	{
