@@ -24,7 +24,7 @@ nonCols=res(3);
 D=res(4);
 L=res(5);
 W=res(6);
-dim=res(7); %sphere radius
+dim=res(7); %diam
 ang1=res(8);
 ang2=res(9);
 

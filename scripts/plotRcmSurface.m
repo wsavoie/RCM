@@ -1,4 +1,4 @@
-% load('phiErr.mat')
+load('phiErr.mat')
 %dont forget phi error
 figure(2)
 lws = unique(phiErr(:,1));
@@ -36,6 +36,7 @@ figText(gcf,14);
 
 %%
 figure(3)
+
 [idx,val]=find(phiErr(:,2)==0.0);
 LD=phiErr(idx,1);
 phild = phiErr(idx,3);
