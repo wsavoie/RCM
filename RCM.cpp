@@ -137,7 +137,7 @@ int main(int argc, char* argv[])
 	int completed = 0;
 	int NN = 0;
 	//	int N = 0;
-	unsigned int	its = 2500;
+	unsigned int	its = 1000000;
 
 	for (unsigned int i = 0; i < its; i++)
 	{
@@ -281,7 +281,7 @@ int main(int argc, char* argv[])
 
 		//secondFile << smartOther.cap2.segment.p[0][0] << " " << smartOther.cap2.segment.p[0][1] << " " << smartOther.cap2.segment.p[0][2] << "\n";
 		//secondFile << smartOther.cap2.segment.p[1][0] << " " << smartOther.cap2.segment.p[1][1] << " " << smartOther.cap2.segment.p[1][2] << "\n";
-		//secondFile.close();
+		secondFile.close();
 	}
 
 
