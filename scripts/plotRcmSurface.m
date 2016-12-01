@@ -57,3 +57,22 @@ axis([0,140,0,.7]);
 % [~,idx]=min(abs(.1317-phiSurf(:,3)))
 % 
 % phiSurf(idx,3)
+
+%% plot a1 vs. a2 contour and surface for single LW
+fold = uigetdir('D:\RCMcode\RCM\Results\');
+load([fold,'/phiLW.mat']);
+% temp = [lw' ang1' ang2' phi'];
+maxA1=max(phiSurf(:,2)); minA1=min(phiSurf(:,2));
+maxA2=max(phiSurf(:,3)); minA2=min(phiSurf(:,3));
+lw=phiSurf(:,1); ang1=phiSurf(:,2); ang2=phiSurf(:,3); phi=phiSurf(:,4);
+A1=unique(ang1);
+A2=unique(ang2);
+phis = reshape(phi,[length(A1),length(A2)]);
+% [X,Y]=meshgrid(ang1,ang2);
+figure(1)
+surf(A1,A2,phis);
+xlabel('\alpha_1');ylabel('\alpha_2');zlabel('\phi');
+
+figure(2)
+contour(unique(ang1),unique(ang2),phis);
+xlabel('\alpha_1');ylabel('\alpha_2');
