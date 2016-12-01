@@ -31,6 +31,8 @@ void openRead(std::ofstream& stream, std::string fileN, unsigned int idx)
 int main(int argc, char* argv[])
 {
 	double ang1 = 1, ang2 = 1, box = 1, lw = 1;
+	bool writeOut = true;
+	unsigned int its = 1e6;
 	if (argc < 5)
 	{
 		ang1 = 90;
@@ -45,6 +47,9 @@ int main(int argc, char* argv[])
 		ang2 = atof(argv[2]);
 		lw = atof(argv[3]);
 		box = atof(argv[4]);
+		its= atoi(argv[5]);
+		writeOut = (atoi(argv[6]) != 0);
+
 		Smarticle::w = 14 * Smarticle::D;
 		Smarticle::W = Smarticle::w - Smarticle::D;
 		Smarticle::L = Smarticle::W*lw;
@@ -55,9 +60,17 @@ int main(int argc, char* argv[])
 	//to properly map to system i've already begun using
 	ang1 = ang1*GTE_C_PI / 180.0 - GTE_C_PI / 2;
 	ang2 = -1 * ang2*GTE_C_PI / 180.0 + GTE_C_PI / 2;
-	ofstream firstFile("mainStaple.txt");
-	ofstream secondFile("secondStaple.txt");
-	ofstream intersects("intersects.txt");
+
+	ofstream firstFile;
+	ofstream secondFile;
+	ofstream intersects;
+	ofstream simResults;
+	if (writeOut)
+	{
+		firstFile.open("mainStaple.txt");
+		secondFile.open("secondStaple.txt");
+		intersects.open("intersects.txt");
+	}
 
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -132,7 +145,7 @@ int main(int argc, char* argv[])
 	int completed = 0;
 	int NN = 0;
 	//	int N = 0;
-	unsigned int	its = 0.5e6;
+	//unsigned int	its = 0.5e6;
 	bool mainNotInside = false; //this will be a flag denoting if center particle was generated inside the sphere
 	int count = 0;
 	int exitNum = 1e3;
@@ -141,7 +154,7 @@ int main(int argc, char* argv[])
 	openRead(secondFile, "secondStaple.txt", 1);*/
 	//////////////
 
-	for (unsigned int i = 0; i < its; i++)
+	for (size_t i = 0; i < its; i++)
 	{
 		mainNotInside = true;
 		count = 0;
@@ -383,33 +396,37 @@ int main(int argc, char* argv[])
 		else{
 			continue;
 		}
+		if (writeOut)
+		{
+			firstFile << mainSmart.cap0.segment.p[1][0] << " " << mainSmart.cap0.segment.p[1][1] << " " << mainSmart.cap0.segment.p[1][2] << "\n";
+			firstFile << mainSmart.cap0.segment.p[0][0] << " " << mainSmart.cap0.segment.p[0][1] << " " << mainSmart.cap0.segment.p[0][2] << "\n";
 
-		firstFile << mainSmart.cap0.segment.p[1][0] << " " << mainSmart.cap0.segment.p[1][1] << " " << mainSmart.cap0.segment.p[1][2] << "\n";
-		firstFile << mainSmart.cap0.segment.p[0][0] << " " << mainSmart.cap0.segment.p[0][1] << " " << mainSmart.cap0.segment.p[0][2] << "\n";
+			firstFile << mainSmart.cap1.segment.p[0][0] << " " << mainSmart.cap1.segment.p[0][1] << " " << mainSmart.cap1.segment.p[0][2] << "\n";
+			firstFile << mainSmart.cap1.segment.p[1][0] << " " << mainSmart.cap1.segment.p[1][1] << " " << mainSmart.cap1.segment.p[1][2] << "\n";
 
-		firstFile << mainSmart.cap1.segment.p[0][0] << " " << mainSmart.cap1.segment.p[0][1] << " " << mainSmart.cap1.segment.p[0][2] << "\n";
-		firstFile << mainSmart.cap1.segment.p[1][0] << " " << mainSmart.cap1.segment.p[1][1] << " " << mainSmart.cap1.segment.p[1][2] << "\n";
+			firstFile << mainSmart.cap2.segment.p[0][0] << " " << mainSmart.cap2.segment.p[0][1] << " " << mainSmart.cap2.segment.p[0][2] << "\n";
+			firstFile << mainSmart.cap2.segment.p[1][0] << " " << mainSmart.cap2.segment.p[1][1] << " " << mainSmart.cap2.segment.p[1][2] << "\n";
 
-		firstFile << mainSmart.cap2.segment.p[0][0] << " " << mainSmart.cap2.segment.p[0][1] << " " << mainSmart.cap2.segment.p[0][2] << "\n";
-		firstFile << mainSmart.cap2.segment.p[1][0] << " " << mainSmart.cap2.segment.p[1][1] << " " << mainSmart.cap2.segment.p[1][2] << "\n";
-
-		intersects << mainSmart.checkNotColliding(smartOther, mainSmart) << "\n";
+			intersects << mainSmart.checkNotColliding(smartOther, mainSmart) << "\n";
 
 
-		secondFile << smartOther.cap0.segment.p[1][0] << " " << smartOther.cap0.segment.p[1][1] << " " << smartOther.cap0.segment.p[1][2] << "\n";
-		secondFile << smartOther.cap0.segment.p[0][0] << " " << smartOther.cap0.segment.p[0][1] << " " << smartOther.cap0.segment.p[0][2] << "\n";
+			secondFile << smartOther.cap0.segment.p[1][0] << " " << smartOther.cap0.segment.p[1][1] << " " << smartOther.cap0.segment.p[1][2] << "\n";
+			secondFile << smartOther.cap0.segment.p[0][0] << " " << smartOther.cap0.segment.p[0][1] << " " << smartOther.cap0.segment.p[0][2] << "\n";
 
-		secondFile << smartOther.cap1.segment.p[0][0] << " " << smartOther.cap1.segment.p[0][1] << " " << smartOther.cap1.segment.p[0][2] << "\n";
-		secondFile << smartOther.cap1.segment.p[1][0] << " " << smartOther.cap1.segment.p[1][1] << " " << smartOther.cap1.segment.p[1][2] << "\n";
+			secondFile << smartOther.cap1.segment.p[0][0] << " " << smartOther.cap1.segment.p[0][1] << " " << smartOther.cap1.segment.p[0][2] << "\n";
+			secondFile << smartOther.cap1.segment.p[1][0] << " " << smartOther.cap1.segment.p[1][1] << " " << smartOther.cap1.segment.p[1][2] << "\n";
 
-		secondFile << smartOther.cap2.segment.p[0][0] << " " << smartOther.cap2.segment.p[0][1] << " " << smartOther.cap2.segment.p[0][2] << "\n";
-		secondFile << smartOther.cap2.segment.p[1][0] << " " << smartOther.cap2.segment.p[1][1] << " " << smartOther.cap2.segment.p[1][2] << "\n";
+			secondFile << smartOther.cap2.segment.p[0][0] << " " << smartOther.cap2.segment.p[0][1] << " " << smartOther.cap2.segment.p[0][2] << "\n";
+			secondFile << smartOther.cap2.segment.p[1][0] << " " << smartOther.cap2.segment.p[1][1] << " " << smartOther.cap2.segment.p[1][2] << "\n";
+		}
 	}
 
 
 
 	cout << "Total Iterations: " << its << "\nCompleted Iterations: " << completed << "\nNon-Collisions: " << NN;
-	ofstream simResults("results.txt");
+	/*ofstream simResults("results.txt");*/
+	//simResults.open("results.txt");
+	openRead(simResults, "results.txt", 1);
 	simResults << its << "\n";
 	simResults << completed << "\n";
 	simResults << NN << "\n";
@@ -424,8 +441,8 @@ int main(int argc, char* argv[])
 	ang2 = -1 * 180 * (ang2 - GTE_C_PI / 2) / (GTE_C_PI);
 	simResults << ang1 << "\n";
 	simResults << ang2 << "\n";
-	intersects.close();
 	simResults.close();
+	intersects.close();
 	secondFile.close();
 	firstFile.close();
 	return 0;
