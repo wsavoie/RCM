@@ -72,7 +72,66 @@ phis = reshape(phi,[length(A1),length(A2)]);
 figure(1)
 surf(A1,A2,phis);
 xlabel('\alpha_1');ylabel('\alpha_2');zlabel('\phi');
-
+axis([-130 130 -130 130 0.085, 0.13]);
 figure(2)
-contour(unique(ang1),unique(ang2),phis);
+contour(A1,A2,phis);
 xlabel('\alpha_1');ylabel('\alpha_2');
+
+
+%% plot a1 vs. a2 contour and surface for all one after the other 
+
+fold = uigetdir('D:\RCMcode\RCM\Results\');
+load([fold,'/phiVol.mat']);
+% temp = [lw' ang1' ang2' phi'];
+figure(1)
+for i=size(phiVol,3):-1:1
+
+subplot(1,2,1)
+phis=squeeze(phiVol(:,:,i));
+surf(A1,A2,phis);
+xlabel('\alpha_1');ylabel('\alpha_2');zlabel('\phi');
+axis([-120,120,-120,120,.05,.3])
+suptitle(['L/W=',num2str(lwI(i))]);
+subplot(1,2,2);
+contour(A1,A2,phis);
+xlabel('\alpha_1');ylabel('\alpha_2');
+
+pause;
+end
+
+%% plot staple shape from phiVol matrix
+fold = uigetdir('D:\RCMcode\RCM\Results\');
+load([fold,'/phiVol.mat']);
+figure(5);
+s=find(A1==90);
+b=squeeze(phiVol(s,s,:));
+plot(lwI,b);
+title('\phi vs. l/w at \alpha_i=[90,90] from Volumetric data');
+xlabel('l/w');ylabel('\phi');
+%% plot a1 vs. a2 volumetric slices movie
+fold = uigetdir('D:\RCMcode\RCM\Results\');
+load([fold,'/phiVol.mat']);
+% temp = [lw' ang1' ang2' phi'];
+[x,y,z] = meshgrid(A1,A2,lwI);
+v=phiVol;
+mx=max(A1);
+mn=min(A1);
+mnl=min(lwI);
+mxl=max(lwI);
+for k = -0.5:.005:1.5
+   hsp = surf(linspace(mn,mx,20),linspace(mn,mx,20),...
+      zeros(20) + k);
+   rotate(hsp,[1,-1,1],0)
+   xd = hsp.XData;
+   yd = hsp.YData;
+   zd = hsp.ZData;
+   delete(hsp)
+   
+   slice(x,y,z,v,[mnl,mxl],[],[mnl]) % Draw some volume boundaries
+   hold on
+   slice(x,y,z,v,xd,yd,zd)
+   hold off
+%    view(-5,10)
+   drawnow
+end
+xlabel('\alpha_1');ylabel('\alpha_2');zlabel('l/w');
