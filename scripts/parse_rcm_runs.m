@@ -9,7 +9,7 @@ folds = folds(3:end);
 PON = [1 2];
 C=10.8;
 for(i=1:length(folds))
-[lw(i), phi(i), ang1(i), ang2(i)]=rcm(horzcat(directory_name,folds(i).name,'\'),C);
+[lw(i), phi(i), ang1(i), ang2(i) L(i) W(i) D(i),vp(i)]=rcm(horzcat(directory_name,folds(i).name,'\'),C);
 end
 temp = [lw' ang1' phi'];
 temp = sortrows(temp,2);
