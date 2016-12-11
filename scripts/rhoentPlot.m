@@ -6,6 +6,7 @@ load([fold,'/phiVol.mat']);
 alpha=2.648;
 % temp = [lw' ang1' ang2' phi'];
 figure(1)
+rhoent=[];
 for i=1:size(phiVol,3)
 
 phis=squeeze(phiVol(:,:,i));
@@ -15,20 +16,25 @@ Ds=squeeze(DVol(:,:,i));
 vps=squeeze(vpVol(:,:,i));
 % surf(A1,A2,phis);
 lw=Ls(1)/Ws(1);
-rhoent=(4*phis.^2/(pi*alpha)).*((Ls-Ds).*(Ws-2*Ds)./(Ds.^2.*vps));
-pts('lw=',lw,' ',max(max(rhoent)),' ', rhoent(22,22) ,' ', rhoent(4,4));
+rhoent(:,:,i)=(4*phis.^2/(pi*alpha)).*((Ls-Ds).*(Ws-2*Ds)./(Ds.^2.*vps));
+pts('lw=',lw,' ','max rho_ent at lw=',max(max(rhoent(:,:,i))));
 subplot(1,2,1)
-surf(A1,A2,rhoent);
+surf(A1,A2,rhoent(:,:,i));
 colorbar;
 xlabel('\alpha_1');ylabel('\alpha_2');zlabel('\rho_{ent}');
-% axis([-120,120,-120,120,0,.028])
+axis([-120,120,-120,120,0,.038])
 suptitle(['\rho_{ent} at L/W=',num2str(lw)]);
 subplot(1,2,2);
-contour(A1,A2,rhoent);
+contour(A1,A2,rhoent(:,:,i));
 xlabel('\alpha_1');ylabel('\alpha_2');
 pause;
 end
-
+[mrhoent,ind]=max(max(max(rhoent)));
+[kk,jj,ii]=ind2sub(size(rhoent),ind);
+ml=squeeze(LVol(:,:,kk));
+mw=squeeze(WVol(:,:,kk));
+mlw=ml(1)/mw(1);
+pts('max(rhoent)=',mrhoent,' at (a1,a2,lw)=(',A1(ii),',',A2(jj),',',mlw,')');
 %%
 hold on;
 aa1=1; aa2=25;
