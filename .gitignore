@@ -199,3 +199,5 @@ FakesAssemblies/
 *.avi
 #Matlab autosave files
 *.asv
+#config files for visual studio
+*.cfg
