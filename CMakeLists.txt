@@ -10,7 +10,7 @@ project (RCM)
 file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 file(GLOB HEADERS "${PROJECT_SOURCE_DIR}/include/*.h")
 
-set(GTENGINE_PATH "" CACHE FILEPATH "path to include files for GTEngine")
+set(GTENGINE_PATH "" CACHE FILEPATH "path to GTEngine folder")
 include_directories("${GTENGINE_PATH}/Source" "${GTENGINE_PATH}/Include" ${PROJECT_BINARY_DIR} "${PROJECT_SOURCE_DIR}/src" "${PROJECT_SOURCE_DIR}/include" )
 
 
