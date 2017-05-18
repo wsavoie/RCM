@@ -3,16 +3,16 @@
 
 
 
-#include "stdafx.h"
 #include <math.h>
 #include <iostream>
 #include <string>
 #include <random>
-#include "smarticle.h"
-
+#include "Smarticle.h"
+#include <fstream>
 
 using namespace std;
 using namespace gte;
+
 //using namespace smart;
 void openRead(std::ofstream& stream, std::string fileN, unsigned int idx = 1);
 

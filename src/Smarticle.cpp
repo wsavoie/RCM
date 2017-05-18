@@ -1,4 +1,4 @@
-#include "stdafx.h"
+
 #include "Smarticle.h"
 
 using namespace gte;
