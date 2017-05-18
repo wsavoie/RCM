@@ -1,1 +1,3 @@
-need GTEngine v12 or v14 to run this code
+1. need to download gtengine "geometry tools engine" any version should do
+2. then build the source to generate the lib file for release and/or debug
+3. You should have everything for cmake to work properly at that point 
