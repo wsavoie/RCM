@@ -22,9 +22,9 @@ ${HEADERS}
 ${INCLUDEDIRS}
 )
 
-set(GTENGINE_LIB_CONFIGPATH "" CACHE FILEPATH "path to any gtengine lib will correct for configuration type")
+set(GTENGINE_LIB_CONFIGPATH "" CACHE FILEPATH "path to GTEngine directory with configuration folders containing lib files")
 
-target_link_libraries(RCM "${GTENGINE_LIB_CONFIGPATH}/../$<CONFIGURATION>/*.lib")
+target_link_libraries(RCM "${GTENGINE_LIB_CONFIGPATH}/$<CONFIGURATION>/*.lib")
 
 # add_executable (RCM ${SOURCES})
 # foreach(PROGRAM ${RCMCODE})
