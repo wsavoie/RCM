@@ -8,21 +8,23 @@ exePath="D:/RCMcode/RCM/Release/RCM.exe"
 #a2Arr=(70 70 70 70 70 70 70 70 70 70 70 70 70 70 70);
 #boxSizeArr=(122 122 122 122 122 122 122 122 122 122 122 122 122 122 122);
 
-lwVals=(1.4 1.3 1.2 1.1 0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1 0.0);
+lwVals=(1.4 1.3 1.2 1.1 1.0 0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1 0.0);
 # lwVals=(0.1 0.5 0.9 1.4 1.3 1.2 1.1 1.0 0.9 0.8 0.7 0.6 0.5 0.4 0.3 0.2 0.1 0.0);
 its=1000000
-mainFold="test"
-boxSize=150;
+mainFold="N=1e6_bx75"
+boxSize=75;
 printPos=0;
-mkdir D:/RCMcode/RCM/Results/${mainFold};
-for z in `seq 0 13`; do
-	# a1Arr=(-120 -110 -100 -90 -80 -70 -60 -50 -40 -30 -20 -10 0 10 20 30 40 50 60 70 80 90 100 110 120);
-	# a2Arr=(-120 -110 -100 -90 -80 -70 -60 -50 -40 -30 -20 -10 0 10 20 30 40 50 60 70 80 90 100 110 120);
-	a1Arr=(90);
-	a2Arr=(90);
+mkdir D:/Projects/RCM/Results/${mainFold};
+for z in `seq 13 14`; do
+	#a1Arr=(-120 -110 -100 -90 -80 -70 -60 -50 -40 -30 -20 -10 0 10 20 30 40 50 60 70 80 90 100 110 120);
+	#a1Arr=(-120 -110 -100 -90 -80 -70 -60 -50 -40 -30 -20 -10 0 10 20 30 40 50 60 70 80 90 100 110 120);
+	a1Arr=(0 10 20 30 40 50 60 70 80 90 100 110 120);
+	a2Arr=(0 10 20 30 40 50 60 70 80 90 100 110 120);
+	#a1Arr=(90);
+	#a2Arr=(90);
 	angsL=${#a1Arr[@]};
 	((angsLen=angsL-1));
-	cd D:/RCMcode/RCM/Results/${mainFold};
+	cd D:/Projects/RCM/Results/${mainFold};
 	# foldName=AngleChangeLW=${lwArr[$z]};
 	foldName="lw=${lwVals[$z]}"
 	mkdir $foldName

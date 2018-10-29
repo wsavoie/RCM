@@ -1,7 +1,7 @@
 % directory_name = 'D:\RCMcode\RCM\Results\ushape2\10m 80\';
-fold =uigetdir('D:\RCMcode\RCM\Results\');
+fold =uigetdir([pwd,'\..\Results']);
 
-C=10;
+C=10.3;
 PON = [1 1];
 outerFolds = dir2(fold);
 outerFolds=outerFolds(find([outerFolds(:).isdir]));

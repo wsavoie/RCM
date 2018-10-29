@@ -1,7 +1,7 @@
 % directory_name = 'AngleChangeLW=0.0';
 % directory_name = 'D:\RCMcode\RCM\Results\All angles 1M iterations\AngleChange\';
 % directory_name = 'D:\RCMcode\RCM\Results\All angles 1M iterations\AngleChangeLW=0.7\';
-directory_name = 'D:\RCMcode\RCM\Results\AngleChangeLW=1.4\';
+directory_name = [pwd,'\..\Results\test'];
 folds = dir(directory_name);
 folds = folds(3:end);
 
@@ -9,7 +9,7 @@ folds = folds(3:end);
 PON = [1 2];
 C=10.8;
 for(i=1:length(folds))
-[lw(i), phi(i), ang1(i), ang2(i) L(i) W(i) D(i),vp(i)]=rcm(horzcat(directory_name,folds(i).name,'\'),C);
+[lw(i), phi(i), ang1(i), ang2(i) L(i) W(i) D(i),vp(i)]=rcm(horzcat(directory_name,folds(i).name),C);
 end
 temp = [lw' ang1' phi'];
 temp = sortrows(temp,2);
