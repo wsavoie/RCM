@@ -1,7 +1,8 @@
-function [lw, phi,ang1,ang2,L,W,D,vp]= rcm(fold,C) 
+function [lw, phi,ang1,ang2,L,W,D,vp]= rcm(fold,C,shape) 
 %C=contact number from paper
 
 % C = 10.5;
+% shape==0 for sphere volume shape==1 for cube
 % pars = '0.2-90-90-122\';
 % fold = 'D:\RCMcode\RCM\Results\UShape\';
 PON=0;
@@ -11,11 +12,11 @@ PON=0;
 % res         = importdata(horzcat(fold,pars,'results.txt'));
 
 if PON==1
-    points1     = importdata(horzcat(fold,'mainStaple.txt'));
-    points2     = importdata(horzcat(fold,'secondStaple.txt'));
-    intersects  = importdata(horzcat(fold,'intersects.txt'));
+    points1     = importdata(fullfile(fold,'mainStaple.txt'));
+    points2     = importdata(fullfile(fold,'secondStaple.txt'));
+    intersects  = importdata(fullfile(fold,'intersects.txt'));
 end
-res         = importdata(horzcat(fold,'results.txt'));
+res         = importdata(fullfile(fold,'results.txt'));
 
 
 its= res(1);
@@ -37,7 +38,11 @@ end
 % p=(nonCols)/completed;
 p=(completed-nonCols)/completed;
 
-V=4/3*pi*((dim)/2)^3;
+if(shape==0)%sphere
+V=4/3*pi*(dim/2)^3;
+else%rect
+V=dim^3;
+end
 
 % phi=[10.8*vp/(p*V) 10.8*vp2/(p*V)]
 phi=C*vp/(p*V);

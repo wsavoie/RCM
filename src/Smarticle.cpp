@@ -45,21 +45,29 @@ bool Smarticle::checkNotColliding(Smarticle other, Smarticle main)
 			z = cap0.segment.p.at(i)[2] - center;
 
 			if (sqrt(x*x + y*y + z*z) > center)  //if position's r is greater than sphere radius
+			//if (abs(x) > center || abs(y) > center || abs(z) > center)
+			{
 				return false;
+			}
 
 			x = cap1.segment.p.at(i)[0] - center;
 			y = cap1.segment.p.at(i)[1] - center;
 			z = cap1.segment.p.at(i)[2] - center;
 
 			if (sqrt(x*x + y*y + z*z) > center)  //if position's r is greater than sphere radius
+			//if (abs(x) > center || abs(y) > center || abs(z) > center)
+			{
 				return false;
-
+			}
 			x = cap2.segment.p.at(i)[0] - center;
 			y = cap2.segment.p.at(i)[1] - center;
 			z = cap2.segment.p.at(i)[2] - center;
 
 			if (sqrt(x*x + y*y + z*z) > center)  //if position's r is greater than sphere radius
+			//if (abs(x) > center || abs(y) > center || abs(z) > center)
+			{
 				return false;
+			}
 		}
 		return true;
 	}

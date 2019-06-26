@@ -1,5 +1,5 @@
 %% plot a1 vs. a2 volumetric slices movie
-fold = uigetdir('D:\RCMcode\RCM\Results\');
+fold = uigetdir('D:\Projects\RCM\Results');
 load([fold,'/phiVol.mat']);
 
 % D=0.5;

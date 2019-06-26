@@ -1,7 +1,10 @@
 % directory_name = 'D:\RCMcode\RCM\Results\ushape2\10m 80\';
-fold =uigetdir([pwd,'\..\Results']);
+function[]= SaveRCMRunsIntoMat(fold,C,shape) 
+% fold =uigetdir([pwd,'\..\Results']);
 
-C=10.3;
+% C=10.1;
+% shape=0;
+warning('calculating for shape=0');
 PON = [1 1];
 outerFolds = dir2(fold);
 outerFolds=outerFolds(find([outerFolds(:).isdir]));
@@ -15,13 +18,13 @@ phiSurf=[];
 
 
 for(i=1:length(outerFolds)) 
-    innerFolds=dir2([fold,'/',outerFolds(i).name]);
+    innerFolds=dir2(fullfile(fold,outerFolds(i).name));
     innerFolds=innerFolds(find([innerFolds(:).isdir]));
     
     [lw,phi,ang1,ang2,L,W,D,vp]=deal(zeros(length(innerFolds),1));
     for j=1:length(innerFolds)
-        innerName=[fold,'\',outerFolds(i).name,'\',innerFolds(j).name,'\'];
-        [lw(j), phi(j), ang1(j), ang2(j),L(j),W(j),D(j),vp(j)]=rcm(horzcat(innerName),C);
+        innerName=fullfile(fold,outerFolds(i).name,innerFolds(j).name);
+        [lw(j), phi(j), ang1(j), ang2(j),L(j),W(j),D(j),vp(j)]=rcm(innerName,C,shape);
     end
     temp = [lw ang1 ang2 phi];
     temp = sortrows(temp,[2,3]);
@@ -30,8 +33,8 @@ for(i=1:length(outerFolds))
         
         xlabel('Angle (\circ)');
         ylabel('\phi');
-        title('RCM Results for Symmetric Angle Shape 2.5M iterations');
-        if lw(3)==0.1;
+%         title('RCM Results for Symmetric Angle Shape 2.5M iterations');
+        if lw(3)==0.1
             OutM=errBarCalc(ang1,phi);
             errorbar(OutM(:,1),OutM(:,2),OutM(:,3),'-o')
             axis([0,120,0.05,0.3]);
@@ -43,7 +46,7 @@ for(i=1:length(outerFolds))
     LW=lw(1);
     LWs(i)=LW;
 %     phis(i)=phi;
-save([fold,'/',outerFolds(i).name,'/','phiLW.mat'],'phiSurf','LW','L','W','vp','D');
+save(fullfile(fold,outerFolds(i).name,'phiLW.mat'),'phiSurf','LW','L','W','vp','D');
 end
 % save('phiErr.mat')
 
@@ -76,12 +79,12 @@ LVol=LVol(:,:,ord);
 WVol=WVol(:,:,ord);
 DVol=DVol(:,:,ord);
 vpVol=vpVol(:,:,ord);
-save([fold,'/','phiVol.mat'],'phiVol','lwI','A1','A2','LVol','WVol','DVol','vpVol');
+save(fullfile(fold,'phiVol.mat'),'phiVol','lwI','A1','A2','LVol','WVol','DVol','vpVol');
 
 
 
-figText(gcf,14);
-figure(45);
-hold on;
-% plot(LWs,phis,'o-');
-axis([0 1.4 0.05 0.3]);
+% figText(gcf,14);
+% % figure(45);
+% hold on;
+% % plot(LWs,phis,'o-');
+% axis([0 1.4 0.05 0.3]);
